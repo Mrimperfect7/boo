@@ -1,0 +1,12 @@
+.cover-frame {
+  position: relative;
+  width: var(--page-w);
+  height: var(--page-h);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow:
+    0 2px 6px -2px rgba(0, 0, 0, 0.55),
+    0 26px 50px -24px rgba(0, 0, 0, 0.8),
+    0 70px 110px -60px rgba(0, 0, 0, 0.9);
+  background: #efe8da;
+}

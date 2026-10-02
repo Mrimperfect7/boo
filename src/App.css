@@ -1,0 +1,121 @@
+.app {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #0d0c0b;
+  color: #e8e2d5;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Reading-room lighting behind the book. */
+.app__ambient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(58% 48% at 50% 42%, #26231e 0%, rgba(24, 22, 19, 0.4) 52%, transparent 78%),
+    radial-gradient(90% 70% at 50% 110%, rgba(0, 0, 0, 0.55), transparent 60%);
+}
+
+.app__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 100% at 50% 46%, transparent 52%, rgba(0, 0, 0, 0.5) 100%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.app__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 6;
+}
+
+/* Faint drifting motes of paper dust in the lamplight. */
+.app__motes {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.app__motes i {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 246, 226, 0.16);
+  filter: blur(0.5px);
+  animation: mote-drift linear infinite;
+}
+
+@keyframes mote-drift {
+  0% {
+    transform: translate3d(0, 12vh, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(3vw, -14vh, 0);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app__motes {
+    display: none;
+  }
+}
+
+.app__status {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(238, 232, 218, 0.45);
+}
+
+.load-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.load-error p {
+  margin: 0;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: rgba(238, 232, 218, 0.6);
+}
+
+.load-error button {
+  border: 1px solid rgba(255, 248, 232, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 248, 232, 0.05);
+  color: #f2ecdf;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 10px 22px;
+  cursor: pointer;
+}
+
+.load-error button:hover {
+  background: rgba(255, 248, 232, 0.1);
+}

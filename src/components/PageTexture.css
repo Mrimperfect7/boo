@@ -1,0 +1,66 @@
+.texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.texture__grain,
+.texture__fibre,
+.texture__vignette {
+  position: absolute;
+  inset: 0;
+}
+
+/* Fine press grain — the single most convincing "this is paper" cue. */
+.texture__grain {
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+.texture--ink .texture__grain {
+  opacity: 0.32;
+  mix-blend-mode: screen;
+}
+
+/* Long fibres in the pulp, barely there. */
+.texture__fibre {
+  opacity: 0.055;
+  background-image: repeating-linear-gradient(
+      92deg,
+      rgba(120, 104, 78, 0.5) 0px,
+      rgba(120, 104, 78, 0.5) 1px,
+      transparent 1px,
+      transparent 7px
+    ),
+    repeating-linear-gradient(
+      1deg,
+      rgba(120, 104, 78, 0.35) 0px,
+      rgba(120, 104, 78, 0.35) 1px,
+      transparent 1px,
+      transparent 11px
+    );
+  mix-blend-mode: multiply;
+}
+
+.texture--ink .texture__fibre {
+  opacity: 0.09;
+  mix-blend-mode: screen;
+}
+
+/* Slight darkening toward the outer edges of the sheet. */
+.texture__vignette {
+  background: radial-gradient(
+    130% 120% at 50% 40%,
+    transparent 55%,
+    rgba(60, 48, 30, 0.07) 100%
+  );
+}
+
+.texture--ink .texture__vignette {
+  background: radial-gradient(130% 120% at 50% 40%, transparent 60%, rgba(0, 0, 0, 0.35) 100%);
+}

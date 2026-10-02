@@ -1,0 +1,26 @@
+{
+  "name": "meridian-magazine",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MERIDIAN — a premium digital magazine with a tactile, realistic page-turning reader.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b"
+  },
+  "dependencies": {
+    "framer-motion": "^13.5.0",
+    "lucide-react": "^1.49.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "typescript": "~5.9.2",
+    "vite": "^7.1.3"
+  }
+}

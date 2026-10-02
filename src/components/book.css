@@ -1,0 +1,486 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   The book. Two stacks of paper, a gutter between them, and one leaf that bends
+   through 3D space while everything else stays flat.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.reader {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  touch-action: pan-y;
+  overscroll-behavior: none;
+  cursor: pointer;
+}
+
+.reader[data-zoomed='true'] {
+  touch-action: none;
+  cursor: grab;
+}
+
+.reader[data-zoomed='true']:active {
+  cursor: grabbing;
+}
+
+/* Zoom + pan live on one composited layer. */
+.reader__stage {
+  transform: translate3d(var(--pan-x, 0px), var(--pan-y, 0px), 0) scale(var(--zoom, 1));
+  transform-origin: 50% 46%;
+  transition: transform 380ms cubic-bezier(0.22, 0.68, 0, 1);
+  will-change: transform;
+}
+
+.book {
+  --radius: 4px;
+  position: relative;
+  width: calc(var(--page-w) * 2);
+  height: var(--page-h);
+}
+
+.book[data-mode='single'] {
+  width: var(--page-w);
+}
+
+.book[data-mode='spread'] {
+  --half-x: var(--page-w);
+}
+
+.book[data-mode='single'] {
+  --half-x: 0px;
+}
+
+/* Contact shadow + floor pool ------------------------------------------------ */
+
+.book__shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  box-shadow:
+    0 3px 8px -3px rgba(0, 0, 0, 0.6),
+    0 24px 44px -22px rgba(0, 0, 0, 0.75),
+    0 80px 130px -55px rgba(0, 0, 0, 0.95);
+  z-index: 0;
+}
+
+.book__floor {
+  position: absolute;
+  left: -7%;
+  right: -7%;
+  bottom: -4.5%;
+  height: 9%;
+  border-radius: 50%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.9), transparent 70%);
+  filter: blur(22px);
+  z-index: 0;
+}
+
+/* The 3D stage --------------------------------------------------------------- */
+
+.book__spread {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 2600px;
+  perspective-origin: 50% 44%;
+  transform-style: preserve-3d;
+}
+
+.book__half--left,
+.book__half--right {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  z-index: 2;
+}
+
+.book__half--left {
+  left: 0;
+}
+
+.book__half--right {
+  right: 0;
+}
+
+.book[data-mode='single'] .book__half {
+  width: 100%;
+}
+
+.book[data-mode='single'] .book__half--right {
+  left: 0;
+  right: auto;
+}
+
+.book[data-mode='single'] .book__half--left {
+  display: none;
+}
+
+/* Page stack thickness ------------------------------------------------------- */
+
+.stack {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  width: var(--page-w);
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, #efe8da, #d9d0bd);
+}
+
+.stack--right {
+  right: 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.stack--left {
+  left: 0;
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.book[data-mode='single'] .stack--left {
+  display: none;
+}
+
+/* Spine ---------------------------------------------------------------------- */
+
+.book__spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  margin-left: -0.5px;
+  background: rgba(40, 30, 18, 0.35);
+  z-index: 6;
+  pointer-events: none;
+}
+
+.book__spine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 1px;
+  width: 1px;
+  background: rgba(255, 250, 238, 0.3);
+}
+
+.book[data-mode='single'] .book__spine {
+  display: none;
+}
+
+/* Shadows cast by the turning leaf ------------------------------------------- */
+
+.book__cast {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  z-index: 8;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.book[data-mode='single'] .book__cast--right {
+  left: auto;
+  right: 0;
+}
+
+.book[data-mode='single'] .book__cast--left {
+  right: auto;
+  left: 0;
+}
+
+.book__cast--right {
+  left: 50%;
+  background: linear-gradient(to right, rgba(24, 16, 8, 0.5), rgba(24, 16, 8, 0) 88%);
+}
+
+.book__cast--left {
+  right: 50%;
+  background: linear-gradient(to left, rgba(24, 16, 8, 0.55), rgba(24, 16, 8, 0) 86%);
+}
+
+/* The turning leaf ----------------------------------------------------------- */
+
+.sheet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: translateZ(2.5px);
+  z-index: 20;
+  will-change: transform;
+}
+
+.book[data-mode='single'] .sheet {
+  left: 0;
+  width: 100%;
+}
+
+.facet {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  transform-origin: left center;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.facet__inner {
+  position: absolute;
+  top: 0;
+  width: var(--page-w);
+  height: var(--page-h);
+}
+
+/* The reverse side of the sheet: same surface, content mirrored so it reads
+   correctly once the leaf has come to rest on the left. */
+.facet--back {
+  transform: scaleX(-1);
+}
+
+.facet--back .facet__inner--mirror {
+  transform: scaleX(-1);
+}
+
+.facet__shade,
+.facet__sheen {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.facet__shade {
+  background: linear-gradient(175deg, rgba(38, 28, 16, 0.92), rgba(22, 16, 9, 0.82));
+}
+
+.facet__sheen {
+  background: linear-gradient(178deg, rgba(255, 252, 240, 0.7), rgba(255, 244, 218, 0.35));
+  mix-blend-mode: soft-light;
+}
+
+/* Rounded outer corners on the free edge of the leaf. */
+.sheet__face--front .facet:last-child,
+.sheet__face--back .facet:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+/* Paper thickness, visible when the leaf turns edge-on. */
+.facet--edge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: linear-gradient(to right, rgba(255, 252, 240, 0.9), rgba(186, 173, 146, 0.95));
+  opacity: var(--edge-o, 0);
+  pointer-events: none;
+}
+
+/* Hover zones ---------------------------------------------------------------- */
+
+.book__hover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 18%;
+  z-index: 30;
+}
+
+.book__hover--next {
+  right: 0;
+}
+
+.book__hover--prev {
+  left: 0;
+}
+
+.book__hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 42%;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+.book__hover--next::after {
+  right: 0;
+  background: linear-gradient(to right, transparent, rgba(255, 250, 235, 0.14));
+}
+
+.book__hover--prev::after {
+  left: 0;
+  background: linear-gradient(to left, transparent, rgba(255, 250, 235, 0.14));
+}
+
+.book__hover:hover::after {
+  opacity: 1;
+}
+
+.book__hover[data-disabled='true'] {
+  cursor: default;
+}
+
+.book__hover[data-disabled='true']:hover::after {
+  opacity: 0;
+}
+
+/* ── The printed page ──────────────────────────────────────────────────────── */
+
+.page {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #f7f3ea;
+  background-image: linear-gradient(
+    168deg,
+    rgba(255, 253, 246, 0.9) 0%,
+    rgba(246, 240, 228, 0.55) 46%,
+    rgba(240, 233, 218, 0.75) 100%
+  );
+  color: var(--ink);
+  font-size: calc(var(--page-w) * 0.0305);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page--ink {
+  background: #14120f;
+  background-image: linear-gradient(
+    168deg,
+    rgba(38, 34, 29, 0.85) 0%,
+    rgba(20, 18, 15, 0.9) 55%,
+    rgba(12, 11, 9, 1) 100%
+  );
+}
+
+.page--right,
+.page--single {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.page--left {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.page--empty {
+  background: transparent;
+  background-image: none;
+  box-shadow: none;
+}
+
+.page__body {
+  position: absolute;
+  inset: 0;
+  padding: 2.9em 2.4em 2.6em;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Full-bleed layouts manage their own padding. */
+.page--cover .page__body,
+.page--feature .page__body,
+.page--photography .page__body,
+.page--image .page__body,
+.page--advertisement .page__body,
+.page--back-cover .page__body,
+.page--spread .page__body {
+  padding: 0;
+}
+
+.page__head {
+  position: absolute;
+  top: 1.5em;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.46em;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--muted);
+  z-index: 4;
+}
+
+.page--spread .page__head {
+  display: none;
+}
+
+.page__folio {
+  position: absolute;
+  bottom: 1.25em;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.page--right .page__folio,
+.page--single .page__folio {
+  right: 2.4em;
+}
+
+.page--left .page__folio {
+  left: 2.4em;
+  flex-direction: row-reverse;
+}
+
+.page__folio-rule {
+  width: 1.6em;
+  height: 1px;
+  background: var(--rule-strong);
+}
+
+.page__folio-num {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.56em;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+}
+
+/* Spine shading: pages darken where they meet the gutter. */
+.book__gutter--left,
+.book__gutter--right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 9%;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.book__gutter--left {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    rgba(48, 34, 18, 0.22),
+    rgba(48, 34, 18, 0.05) 45%,
+    transparent
+  );
+}
+
+.book__gutter--right {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    rgba(48, 34, 18, 0.26),
+    rgba(48, 34, 18, 0.06) 45%,
+    transparent
+  );
+}
+
+.page--ink .book__gutter--left,
+.page--ink .book__gutter--right {
+  opacity: 0.55;
+}
