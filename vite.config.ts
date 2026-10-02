@@ -2,9 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 // https://vite.dev/config/
-export default defineConfig(({ command }) => ({
-  base: command === 'build' ? '/boo/' : '/',
-  plugins: [react()],
+export default defineConfig(({ command }) => {
+  const isGitHubActions = process.env.GITHUB_ACTIONS === 'true';
+  return {
+    base: command === 'build' && isGitHubActions ? '/boo/' : '/',
+    plugins: [react()],
   server: {
     host: '127.0.0.1',
     port: 5199,
@@ -15,4 +17,5 @@ export default defineConfig(({ command }) => ({
     cssTarget: 'chrome110',
     chunkSizeWarningLimit: 1200,
   },
+  };
 });
