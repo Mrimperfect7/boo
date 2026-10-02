@@ -64,3 +64,8 @@
 .texture--ink .texture__vignette {
   background: radial-gradient(130% 120% at 50% 40%, transparent 60%, rgba(0, 0, 0, 0.35) 100%);
 }
+
+/* Performance optimization: disable heavy textures on the flying facets to prevent GPU lag */
+.facet .texture {
+  display: none;
+}

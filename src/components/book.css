@@ -229,7 +229,7 @@
   left: 0;
   height: 100%;
   transform-origin: left center;
-  clip-path: inset(0);
+  overflow: hidden;
   will-change: transform;
 }
 
