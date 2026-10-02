@@ -1,4 +1,7 @@
 import type { Magazine } from '../types/magazine';
+import mangaCity from '../../public/manga_city.jpg';
+import mangaAction from '../../public/manga_action.jpg';
+import mangaVillain from '../../public/manga_villain.jpg';
 
 /**
  * Sample issue — MERIDIAN 07, "The Craft Issue".
@@ -78,7 +81,7 @@ export const sampleMagazine: Magazine = {
             { primary: 'Machines That Draw', secondary: 'Technology', tertiary: '11' },
             { primary: 'Plate II', secondary: 'Salt air, Setouchi', tertiary: '12' },
             { primary: 'The Silent City', secondary: 'Manga by Kenji Sato', tertiary: '15' },
-            { primary: 'What We Keep', secondary: 'Final thoughts', tertiary: '17' },
+            { primary: 'What We Keep', secondary: 'Final thoughts', tertiary: '18' },
           ],
         },
         { kind: 'rule', label: 'Also in this issue' },
@@ -546,15 +549,16 @@ export const sampleMagazine: Magazine = {
       blocks: [
         {
           kind: 'figure',
-          image: photo('manga-panel-1', 1200, 800, true),
+          image: mangaCity,
           tone: 'mono',
-          caption: 'The streets were empty. Not even the stray cats remained.',
+          caption: 'Neo-Kyoto, 2142. The neon glowed, but the streets were strangely quiet.',
         },
         {
-          kind: 'figure',
-          image: photo('manga-panel-2', 1200, 600, true),
-          tone: 'mono',
-          caption: 'I checked my watch. 3:00 AM. Time had stopped.',
+          kind: 'text',
+          columns: 1,
+          body: [
+            'They told me the lower levels were abandoned. A ghost town of old tech and forgotten machinery. But I could hear the hum of the servers.',
+          ],
         },
       ],
     },
@@ -562,12 +566,38 @@ export const sampleMagazine: Magazine = {
     /* ── 16 ─────────────────────────────────────────────── manga page 2 */
     {
       id: 16,
+      type: 'article',
+      kicker: 'Manga',
+      title: 'The Ambush',
+      runningHead: 'The Silent City',
+      tone: 'paper',
+      content: 'An ambush in the dark.',
+      blocks: [
+        {
+          kind: 'text',
+          columns: 1,
+          body: [
+            'Before I could reach the terminal, a shadow detached itself from the ceiling. Fast. Too fast.',
+          ],
+        },
+        {
+          kind: 'figure',
+          image: mangaAction,
+          tone: 'mono',
+          caption: 'I drew my blade just in time. The impact sent sparks flying into the rain.',
+        },
+      ],
+    },
+
+    /* ── 17 ─────────────────────────────────────────────── manga page 3 */
+    {
+      id: 17,
       type: 'photography',
       kicker: 'Manga',
       title: 'The Silent City (Conclusion)',
-      image: photo('manga-full-page', 1400, 1800, true),
+      image: mangaVillain,
       imageCredit: 'Kenji Sato',
-      caption: 'Only the wind remembered.',
+      caption: 'The architect of the silence.',
       runningHead: 'The Silent City',
       tone: 'ink',
       tocLabel: 'The Silent City (Conclusion)',
@@ -575,18 +605,18 @@ export const sampleMagazine: Magazine = {
       blocks: [
         {
           kind: 'figure',
-          image: photo('manga-full-page', 1400, 1800, true),
+          image: mangaVillain,
           bleed: true,
           tone: 'mono',
-          caption: 'Only the wind remembered.',
+          caption: 'His eyes glowed in the dark. "You are too late," he whispered.',
           credit: 'Kenji Sato',
         },
       ],
     },
 
-    /* ── 17 ─────────────────────────────────────────────── final article */
+    /* ── 18 ─────────────────────────────────────────────── final article */
     {
-      id: 17,
+      id: 18,
       type: 'article',
       kicker: 'Final Thoughts',
       title: 'What We Keep',
@@ -628,9 +658,9 @@ export const sampleMagazine: Magazine = {
       ],
     },
 
-    /* ── 18 ─────────────────────────────────────────────── back cover */
+    /* ── 19 ─────────────────────────────────────────────── back cover */
     {
-      id: 18,
+      id: 19,
       type: 'back-cover',
       kicker: 'Next issue',
       title: 'The Water Issue',
