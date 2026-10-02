@@ -555,6 +555,8 @@ export const sampleMagazine: Magazine = {
           columns: 1,
           body: [
             'They told me the lower levels were abandoned. A ghost town of old tech and forgotten machinery. But I could hear the hum of the servers.',
+            'For ten years, the "Silence" had crept up from Sector 4, swallowing the noise, the traffic, and eventually the people. The government called it a quarantine zone. I called it a payday.',
+            'My client wanted a single drive from the mainframe at the core. The pay was enough to buy a ticket to the orbital colonies. All I had to do was walk in, plug in, and walk out. But as I descended the rusted stairs into the dark, the air grew thick with static electricity, and my comms cut out.',
           ],
         },
       ],
@@ -573,8 +575,11 @@ export const sampleMagazine: Magazine = {
         {
           kind: 'text',
           columns: 1,
+          dropCap: true,
+          lead: true,
           body: [
             'Before I could reach the terminal, a shadow detached itself from the ceiling. Fast. Too fast.',
+            '"You shouldn\'t be here, scavenger," a voice echoed, metallic and devoid of emotion. "The core is not for sale."',
           ],
         },
         {
@@ -582,6 +587,14 @@ export const sampleMagazine: Magazine = {
           image: import.meta.env.BASE_URL + 'manga_action.jpg',
           tone: 'mono',
           caption: 'I drew my blade just in time. The impact sent sparks flying into the rain.',
+        },
+        {
+          kind: 'text',
+          columns: 1,
+          body: [
+            'The figure moved like liquid steel. My cybernetics pushed my reaction time to the limit, but I was still barely parrying the strikes. It wasn\'t a drone. It was a Wraith—the corporate assassins they said were dismantled after the cyber-wars.',
+            'I rolled backward, kicking a rusted terminal at it to buy a second. I drew my EMP pistol, but the Wraith vanished into the darkness again, leaving only the sound of rain drumming against the cracked skylights above.',
+          ],
         },
       ],
     },
@@ -591,7 +604,7 @@ export const sampleMagazine: Magazine = {
       id: 17,
       type: 'photography',
       kicker: 'Manga',
-      title: 'The Silent City (Conclusion)',
+      title: 'The Architect',
       image: import.meta.env.BASE_URL + 'manga_villain.jpg',
       imageCredit: 'Kenji Sato',
       caption: 'The architect of the silence.',
@@ -600,6 +613,15 @@ export const sampleMagazine: Magazine = {
       tocLabel: 'The Silent City (Conclusion)',
       content: 'Conclusion of the manga story.',
       blocks: [
+        {
+          kind: 'text',
+          columns: 1,
+          body: [
+            '"You think you are protecting secrets," I yelled into the darkness. "But there\'s nothing left here to protect!"',
+            'The shadows parted, and the Wraith stepped into the dim light of the backup generators. "You are wrong," the machine whispered. "I am not protecting secrets. I am protecting the silence."',
+            'I lowered my weapon, realizing the truth. The mainframe wasn\'t holding data. It was holding a consciousness. And it had chosen peace.',
+          ],
+        },
         {
           kind: 'figure',
           image: import.meta.env.BASE_URL + 'manga_villain.jpg',
