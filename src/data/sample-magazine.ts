@@ -1,7 +1,4 @@
 import type { Magazine } from '../types/magazine';
-import mangaCity from '../../public/manga_city.jpg';
-import mangaAction from '../../public/manga_action.jpg';
-import mangaVillain from '../../public/manga_villain.jpg';
 
 /**
  * Sample issue — MERIDIAN 07, "The Craft Issue".
@@ -549,7 +546,7 @@ export const sampleMagazine: Magazine = {
       blocks: [
         {
           kind: 'figure',
-          image: mangaCity,
+          image: import.meta.env.BASE_URL + 'manga_city.jpg',
           tone: 'mono',
           caption: 'Neo-Kyoto, 2142. The neon glowed, but the streets were strangely quiet.',
         },
@@ -582,7 +579,7 @@ export const sampleMagazine: Magazine = {
         },
         {
           kind: 'figure',
-          image: mangaAction,
+          image: import.meta.env.BASE_URL + 'manga_action.jpg',
           tone: 'mono',
           caption: 'I drew my blade just in time. The impact sent sparks flying into the rain.',
         },
@@ -595,7 +592,7 @@ export const sampleMagazine: Magazine = {
       type: 'photography',
       kicker: 'Manga',
       title: 'The Silent City (Conclusion)',
-      image: mangaVillain,
+      image: import.meta.env.BASE_URL + 'manga_villain.jpg',
       imageCredit: 'Kenji Sato',
       caption: 'The architect of the silence.',
       runningHead: 'The Silent City',
@@ -605,7 +602,7 @@ export const sampleMagazine: Magazine = {
       blocks: [
         {
           kind: 'figure',
-          image: mangaVillain,
+          image: import.meta.env.BASE_URL + 'manga_villain.jpg',
           bleed: true,
           tone: 'mono',
           caption: 'His eyes glowed in the dark. "You are too late," he whispered.',
